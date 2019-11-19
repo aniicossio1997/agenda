@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import laboratorio.practica.adapters.MiAdaptadorConIcono;
 import laboratorio.practica.modelo.RecursoWeb;
 import laboratorio.practica.modelo.TipoRecurso;
 
@@ -19,9 +20,12 @@ import android.app.ActivityManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
-    private RecursoWeb[] values ;
+    private List<RecursoWeb> values ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,19 +34,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        values = new RecursoWeb[]{
-                new RecursoWeb(0, "Fantasma", "http://www.sonidosmp3gratis.com/sounds/ruido_1.mp3", "Ruido fantasmagórico", TipoRecurso.AUDIO),
-                new RecursoWeb(0, "Campanas", "http://www.sonidosmp3gratis.com/sounds/campanas_3.mp3", "Sonido de camapandas", TipoRecurso.AUDIO),
-                new RecursoWeb(0, "Instagram", "http://www.instagram.com", "Sitio Oficial de Instagram", TipoRecurso.SITIO_WEB),
-                new RecursoWeb(0, "Guitarra", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Guitarra PRS", TipoRecurso.IMAGEN),
-                new RecursoWeb(0, "Perro", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Perro", TipoRecurso.IMAGEN)
+        values = new ArrayList<RecursoWeb>();
 
-        };
+        values.add(new RecursoWeb(0, "Fantasma", "http://www.sonidosmp3gratis.com/sounds/ruido_1.mp3", "Ruido fantasmagórico", TipoRecurso.AUDIO));
+        values.add(new RecursoWeb(0, "Campanas", "http://www.sonidosmp3gratis.com/sounds/campanas_3.mp3", "Sonido de camapandas", TipoRecurso.AUDIO));
+        values.add(new RecursoWeb(0, "Instagram", "http://www.instagram.com", "Sitio Oficial de Instagram", TipoRecurso.SITIO_WEB));
+        values.add(new RecursoWeb(0, "Guitarra", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Guitarra PRS", TipoRecurso.IMAGEN));
+        values.add(new RecursoWeb(0, "Perro", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Perro", TipoRecurso.IMAGEN));
+
 
         listView = this.findViewById(R.id.listaRecursos);
         this.setListView(listView);
         this.getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        this.getListView().setAdapter(new ArrayAdapter<RecursoWeb>(this, android.R.layout.simple_list_item_single_choice, android.R.id.text1, values));
+        this.getListView().setAdapter(new MiAdaptadorConIcono(this,  values));
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -89,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private  String convertString( RecursoWeb[] values){
+    private  String convertString( List<RecursoWeb> values){
         String cadena = "==LISTADO DE RECURSOS== \n";
         cadena =cadena + "\n";
-        for (int i = 0; i < values.length; i++) {
-            RecursoWeb recursoWeb = values[i];
-            cadena = cadena+(values[i].toString())+ "\n";
+        for (int i = 0; i < values.size(); i++) {
+            RecursoWeb recursoWeb = values.get(i);
+            cadena = cadena+(values.get(i).toString())+ "\n";
 
         }
 
