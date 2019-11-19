@@ -10,10 +10,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import laboratorio.practica.modelo.RecursoWeb;
 import laboratorio.practica.modelo.TipoRecurso;
 
+import android.app.ActivityManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
@@ -26,30 +30,50 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        values = new RecursoWeb[] {
+        values = new RecursoWeb[]{
                 new RecursoWeb(0, "Fantasma", "http://www.sonidosmp3gratis.com/sounds/ruido_1.mp3", "Ruido fantasmagórico", TipoRecurso.AUDIO),
                 new RecursoWeb(0, "Campanas", "http://www.sonidosmp3gratis.com/sounds/campanas_3.mp3", "Sonido de camapandas", TipoRecurso.AUDIO),
-                new RecursoWeb(0, "Instagram", "http://www.instagram.com", "Sitio Oficial de Instagram", TipoRecurso.SITIO_WEB) ,
-                new RecursoWeb(0, "Guitarra", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Guitarra PRS",TipoRecurso.IMAGEN),
-                new RecursoWeb(0, "Perro", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Perro",TipoRecurso.IMAGEN)
+                new RecursoWeb(0, "Instagram", "http://www.instagram.com", "Sitio Oficial de Instagram", TipoRecurso.SITIO_WEB),
+                new RecursoWeb(0, "Guitarra", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Guitarra PRS", TipoRecurso.IMAGEN),
+                new RecursoWeb(0, "Perro", "https://d1aeri3ty3izns.cloudfront.net/media/44/448686/1200/preview.jpg", "Perro", TipoRecurso.IMAGEN)
 
         };
 
-        listView=this.findViewById(R.id.listaRecursos);
+        listView = this.findViewById(R.id.listaRecursos);
         this.setListView(listView);
         this.getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        this.getListView().setAdapter(new ArrayAdapter<RecursoWeb>(this,android.R.layout.simple_list_item_single_choice, android.R.id.text1,  values));
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+        this.getListView().setAdapter(new ArrayAdapter<RecursoWeb>(this, android.R.layout.simple_list_item_single_choice, android.R.id.text1, values));
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                RecursoWeb rw=(RecursoWeb)adapterView.getAdapter().getItem(position);
-                Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(rw.getUrl()));
+                RecursoWeb rw = (RecursoWeb) adapterView.getAdapter().getItem(position);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(rw.getUrl()));
                 startActivity(intent);
                 //Toast.makeText(getBaseContext(),rw.getUrl(), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
+
+        //===============================================================
+
+
+        final String textValues= this.convertString(values);
+
+        FloatingActionButton shareBtn = findViewById(R.id.shareBtn);
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String texto = textValues;
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                intent.putExtra(Intent.EXTRA_TEXT, texto);
+                startActivity(Intent.createChooser(intent, "Compartir"));
+            }
+        });
+
+
     }
 
     public ListView getListView() {
@@ -62,6 +86,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void setListView(ListView listView) {
         this.listView = listView;
+    }
+
+
+    private  String convertString( RecursoWeb[] values){
+        String cadena = "==LISTADO DE RECURSOS== \n";
+        cadena =cadena + "\n";
+        for (int i = 0; i < values.length; i++) {
+            RecursoWeb recursoWeb = values[i];
+            cadena = cadena+(values[i].toString())+ "\n";
+
+        }
+
+        return cadena;
     }
 
 
