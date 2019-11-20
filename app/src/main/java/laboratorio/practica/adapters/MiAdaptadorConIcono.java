@@ -39,6 +39,7 @@ public class MiAdaptadorConIcono extends ArrayAdapter<RecursoWeb> {
         TextView tv = (TextView) convertView.findViewById(R.id.name);
         ImageView iv= (ImageView) convertView.findViewById(R.id.image);
         RecursoWeb rw = values.get(position);
+
         switch(rw.getTipoRecurso()) {
             case IMAGEN:
                 iv.setImageResource(R.drawable.picture);

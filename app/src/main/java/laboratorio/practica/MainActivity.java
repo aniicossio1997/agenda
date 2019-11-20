@@ -25,7 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
-    private List<RecursoWeb> values ;
+    private List<RecursoWeb> values;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,10 +96,8 @@ public class MainActivity extends AppCompatActivity {
     private  String convertString( List<RecursoWeb> values){
         String cadena = "==LISTADO DE RECURSOS== \n";
         cadena =cadena + "\n";
-        for (int i = 0; i < values.size(); i++) {
-            RecursoWeb recursoWeb = values.get(i);
-            cadena = cadena+(values.get(i).toString())+ "\n";
-
+        for (RecursoWeb recursoWeb : values) {
+            cadena = cadena + recursoWeb + "\n";
         }
 
         return cadena;
